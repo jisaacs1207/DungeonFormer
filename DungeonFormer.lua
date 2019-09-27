@@ -206,9 +206,9 @@ function DungeonFormer:OnInitialize()
         tempLabel = AceGUI:Create("Label")
         tempLabel:SetText(playerString)
         tempLabel:SetFullWidth(true)
-        labels[i]=theLabel
+        container:AddChild(tempLabel)
       end
-      container.AddChild(labels[1])
+      
 
     end
 
