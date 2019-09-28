@@ -3,7 +3,7 @@ timer = 0
 lowest = 1
 highest = 60
 list = {}
-
+carelessWhispered = {}
 
 -- Variables to keep tab variables static rather than to redefine them every time the tab changes
 LowLevel = 17
@@ -346,6 +346,10 @@ function DungeonFormer:OnInitialize()
             tempLabel:SetCallback("OnClick", function()
                 DEFAULT_CHAT_FRAME.editBox:SetText("/tell " .. name .. " " .. msg:GetText())
                 ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
+                table.insert(carelessWhispered, list[i])
+                table.remove(list, i)
+                tab:SelectTab("tab1") -- so lazy... just refreshing the tab by switching it.
+                tab:SelectTab("tab2")
             end)
             scrollWindow:AddChild(tempLabel)
             frame:SetStatusText("      " .. table.getn(list) .. " names collected.")
@@ -356,15 +360,56 @@ function DungeonFormer:OnInitialize()
 
     -- function that draws the widgets for the third tab
     local function DrawGroup3(container)
-        local desc = AceGUI:Create("Label")
-        desc:SetText("Blacklist")
-        desc:SetFullWidth(true)
-        container:AddChild(desc)
+        local f = AceGUI:Create("SimpleGroup")
+        f:SetFullHeight(true)
+        f:SetFullWidth(true)
+        container:AddChild(f)
+        f:SetLayout("Fill") --Fill will make the first child fill the whole content area
+        local scrollWindow = AceGUI:Create("ScrollFrame")
+        scrollWindow.width = "fill";
+        scrollWindow.height = "fill";
+        f:AddChild(scrollWindow)
+        scrollWindow:SetLayout("Flow")
+        for i = 1, table.getn(carelessWhispered) do
+            local name = carelessWhispered[i].fullName;
+            local level = carelessWhispered[i].level
+            local class = carelessWhispered[i].classStr
+            local area = carelessWhispered[i].area
+            local playerString = name .. " " .. level .. " " .. area
+            local tempLabel = AceGUI:Create("InteractiveLabel")
+            --tempLabel:SetFont(GameFontHighlightMedium:GetFont())
+            tempLabel:SetText(playerString)
+            if class == "Warrior" then
+                tempLabel:SetColor(ClassColors.Warrior.r, ClassColors.Warrior.g, ClassColors.Warrior.b)
+            elseif class == "Priest" then
+                tempLabel:SetColor(ClassColors.Priest.r, ClassColors.Priest.g, ClassColors.Priest.b)
+            elseif class == "Druid" then
+                tempLabel:SetColor(ClassColors.Druid.r, ClassColors.Druid.g, ClassColors.Druid.b)
+            elseif class == "Hunter" then
+                tempLabel:SetColor(ClassColors.Hunter.r, ClassColors.Hunter.g, ClassColors.Hunter.b)
+            elseif class == "Mage" then
+                tempLabel:SetColor(ClassColors.Mage.r, ClassColors.Mage.g, ClassColors.Mage.b)
+            elseif class == "Paladin" then
+                tempLabel:SetColor(ClassColors.Paladin.r, ClassColors.Paladin.g, ClassColors.Paladin.b)
+            elseif class == "Rogue" then
+                tempLabel:SetColor(ClassColors.Rogue.r, ClassColors.Rogue.g, ClassColors.Rogue.b)
+            elseif class == "Shaman" then
+                tempLabel:SetColor(ClassColors.Shaman.r, ClassColors.Shaman.g, ClassColors.Shaman.b)
+            elseif class == "Warlock" then
+                tempLabel:SetColor(ClassColors.Warlock.r, ClassColors.Warlock.g, ClassColors.Warlock.b)
+            end
+            tempLabel:SetHighlight([[Interface\QuestFrame\UI-QuestTitleHighlight]])
+            tempLabel:SetFont("Fonts\\FRIZQT__.TTF", 10)
+            tempLabel:SetCallback("OnClick", function()
+                table.insert(list, carelessWhispered[i])
+                table.remove(carelessWhispered, i)
+                tab:SelectTab("tab1") -- so lazy... just refreshing the tab by switching it.
+                tab:SelectTab("tab3")
+            end)
+            scrollWindow:AddChild(tempLabel)
+            frame:SetStatusText("      " .. table.getn(list) .. " names collected.")
+        end
 
-        local button = AceGUI:Create("Button")
-        button:SetText("Tab 3 Button")
-        button:SetWidth(200)
-        container:AddChild(button)
     end
 
     -- Callback function for OnGroupSelected
@@ -395,7 +440,7 @@ function DungeonFormer:OnInitialize()
     tab = AceGUI:Create("TabGroup")
     tab:SetLayout("Flow")
     -- Setup which tabs to show
-    tab:SetTabs({ { text = "Search", value = "tab1" }, { text = "Results", value = "tab2" }, { text = "Blacklist", value = "tab3" } })
+    tab:SetTabs({ { text = "Search", value = "tab1" }, { text = "Results", value = "tab2" }, { text = "Whispered", value = "tab3" } })
     -- Register callback
     tab:SetCallback("OnGroupSelected", SelectGroup)
     -- Set initial Tab (this will fire the OnGroupSelected callback)
