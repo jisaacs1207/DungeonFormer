@@ -4,6 +4,8 @@ lowest = 1
 highest = 60
 list = {}
 
+DungeonFormer:RegisterChatCommand("df", "ToggleShowPlugin")
+
 ClassColors = {
     CustomColor = { r = 0.77, g = 0.12, b = 0.23, a = 1 },
     DeathKnight = { r = 0.77, g = 0.12, b = 0.23 },
@@ -27,6 +29,16 @@ local options = {
 
     },
 }
+
+function DungeonFormer:ToggleShowPlugin()
+    -- Assuming "MyOptions" is the appName of a valid options table
+    if frame:IsShown() then
+        frame:Hide();
+    else
+        frame:Show();
+    end
+end
+
 
 function DungeonFormer:AddToScroll(playerTable)
     local name = playerTable.fullName;
@@ -316,8 +328,9 @@ function DungeonFormer:OnInitialize()
     frame = AceGUI:Create("Frame")
     frame:SetTitle("Dungeon Former")
     frame:SetStatusText("Hotdogs.")
-    frame:SetCallback("OnClose", function(widget)
-        AceGUI:Release(widget)
+    frame:SetCallback("OnClose", function()
+        frame:Hide()
+        --AceGUI:Release(widget)
     end)
     -- Fill Layout - the TabGroup widget will fill the whole frame
     frame:SetLayout("Fill")
