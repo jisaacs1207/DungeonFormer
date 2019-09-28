@@ -15,7 +15,7 @@ ClassColors = {
     Priest = { r = 1.00, g = 1.00, b = 1.00 },
     Rogue = { r = 1.00, g = 0.96, b = 0.41 },
     Shaman = { r = 0.0, g = 0.44, b = 0.87 },
-    Wrlock = { r = 0.58, g = 0.51, b = 0.79 },
+    Warlock = { r = 0.58, g = 0.51, b = 0.79 },
     Warrior = { r = 0.78, g = 0.61, b = 0.43 },
 }
 
