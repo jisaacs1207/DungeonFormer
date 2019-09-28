@@ -203,10 +203,10 @@ function DungeonFormer:OnInitialize()
         local class = list[i].classStr
         local area = list[i].area
         local playerString = name .. " " .. level .. " " .. class .. " " .. area
-        tempLabel = AceGUI:Create("Label")
+        tempLabel = AceGUI:Create("Button")
         tempLabel:SetText(playerString)
         tempLabel:SetFullWidth(true)
-        container:AddChild(tempLabel)
+        scrollWindow:AddChild(tempLabel)
       end
       
 
