@@ -4,6 +4,22 @@ lowest = 1
 highest = 60
 list = {}
 
+
+-- Variables to keep tab variables static rather than to redefine them every time the tab changes
+LowLevel = 17
+HighLevel = 26
+InAreaCheck = false
+DruidCheck = false
+HunterCheck = false
+MageCheck = false
+PaladinCheck = false
+PriestCheck = false
+RogueCheck = false
+ShamanCheck = false
+WarlockCheck = false
+WarriorCheck = false
+MessageBox = "Hey, wanna watch Zool Babies with me?"
+
 DungeonFormer:RegisterChatCommand("df", "ToggleShowPlugin")
 
 ClassColors = {
@@ -152,17 +168,23 @@ function DungeonFormer:OnInitialize()
         container:AddChild(desc)
 
         lowLvl = AceGUI:Create("EditBox")
-        lowLvl:SetText("1")
+        lowLvl:SetText(LowLevel)
         lowLvl:SetLabel("Low Level")
         lowLvl:SetWidth(60)
         lowLvl:DisableButton(true)
+        lowLvl:SetCallback("OnTextChanged", function()
+            LowLevel = lowLvl:GetText()
+        end)
         container:AddChild(lowLvl)
 
         highLvl = AceGUI:Create("EditBox")
-        highLvl:SetText("60")
+        highLvl:SetText(HighLevel)
         highLvl:SetLabel("High Level")
         highLvl:SetWidth(60)
         highLvl:DisableButton(true)
+        highLvl:SetCallback("OnTextChanged", function()
+            HighLevel = highLvl:GetText()
+        end)
         container:AddChild(highLvl)
 
         local searchButton = AceGUI:Create("Button")
@@ -175,8 +197,11 @@ function DungeonFormer:OnInitialize()
 
         inareaCheck = AceGUI:Create("CheckBox")
         inareaCheck:SetLabel("Search Only In Current Map")
-        inareaCheck:SetValue(false)
+        inareaCheck:SetValue(InAreaCheck)
         inareaCheck:SetType("checkbox")
+        inareaCheck:SetCallback("OnValueChanged", function()
+            InAreaCheck = inareaCheck:GetValue()
+        end)
         container:AddChild(inareaCheck)
 
         local classHeading = AceGUI:Create("Heading")
@@ -186,56 +211,83 @@ function DungeonFormer:OnInitialize()
 
         druidCheck = AceGUI:Create("CheckBox")
         druidCheck:SetLabel("Druid")
-        druidCheck:SetValue(true)
+        druidCheck:SetValue(DruidCheck)
         druidCheck:SetType("checkbox")
+        druidCheck:SetCallback("OnValueChanged", function()
+            DruidCheck = druidCheck:GetValue()
+        end)
         container:AddChild(druidCheck)
 
         hunterCheck = AceGUI:Create("CheckBox")
         hunterCheck:SetLabel("Hunter")
-        hunterCheck:SetValue(false)
+        hunterCheck:SetValue(HunterCheck)
         hunterCheck:SetType("checkbox")
+        hunterCheck:SetCallback("OnValueChanged", function()
+            HunterCheck = hunterCheck:GetValue()
+        end)
         container:AddChild(hunterCheck)
 
         mageCheck = AceGUI:Create("CheckBox")
         mageCheck:SetLabel("Mage")
-        mageCheck:SetValue(false)
+        mageCheck:SetValue(MageCheck)
         mageCheck:SetType("checkbox")
+        mageCheck:SetCallback("OnValueChanged", function()
+            MageCheck = mageCheck:GetValue()
+        end)
         container:AddChild(mageCheck)
 
         paladinCheck = AceGUI:Create("CheckBox")
         paladinCheck:SetLabel("Paladin")
-        paladinCheck:SetValue(false)
+        paladinCheck:SetValue(PaladinCheck)
         paladinCheck:SetType("checkbox")
+        paladinCheck:SetCallback("OnValueChanged", function()
+            PaladinCheck = paladinCheck:GetValue()
+        end)
         container:AddChild(paladinCheck)
 
         priestCheck = AceGUI:Create("CheckBox")
         priestCheck:SetLabel("Priest")
-        priestCheck:SetValue(false)
+        priestCheck:SetValue(PriestCheck)
         priestCheck:SetType("checkbox")
+        priestCheck:SetCallback("OnValueChanged", function()
+            PriestCheck = priestCheck:GetValue()
+        end)
         container:AddChild(priestCheck)
 
         rogueCheck = AceGUI:Create("CheckBox")
         rogueCheck:SetLabel("Rogue")
-        rogueCheck:SetValue(false)
+        rogueCheck:SetValue(RogueCheck)
         rogueCheck:SetType("checkbox")
+        rogueCheck:SetCallback("OnValueChanged", function()
+            RogueCheck = rogueCheck:GetValue()
+        end)
         container:AddChild(rogueCheck)
 
         shamanCheck = AceGUI:Create("CheckBox")
         shamanCheck:SetLabel("Shaman")
-        shamanCheck:SetValue(false)
+        shamanCheck:SetValue(ShamanCheck)
         shamanCheck:SetType("checkbox")
+        shamanCheck:SetCallback("OnValueChanged", function()
+            ShamanCheck = shamanCheck:GetValue()
+        end)
         container:AddChild(shamanCheck)
 
         warlockCheck = AceGUI:Create("CheckBox")
         warlockCheck:SetLabel("Warlock")
-        warlockCheck:SetValue(false)
+        warlockCheck:SetValue(WarlockCheck)
         warlockCheck:SetType("checkbox")
+        warlockCheck:SetCallback("OnValueChanged", function()
+            WarlockCheck = warlockCheck:GetValue()
+        end)
         container:AddChild(warlockCheck)
 
         warriorCheck = AceGUI:Create("CheckBox")
         warriorCheck:SetLabel("Warrior")
-        warriorCheck:SetValue(false)
+        warriorCheck:SetValue(WarriorCheck)
         warriorCheck:SetType("checkbox")
+        warriorCheck:SetCallback("OnValueChanged", function()
+            WarriorCheck = warriorCheck:GetValue()
+        end)
         container:AddChild(warriorCheck)
 
     end
@@ -243,10 +295,13 @@ function DungeonFormer:OnInitialize()
     -- function that draws the widgets for the second tab
     local function DrawGroup2(container)
         msg = AceGUI:Create("EditBox")
-        msg:SetText("Hey, want some hotdogs?")
+        msg:SetText(MessageBox)
         msg:SetLabel("Message")
         msg:SetWidth(250)
         msg:DisableButton(true)
+        msg:SetCallback("OnTextChanged", function()
+            MessageBox = msg:GetText()
+        end)
         container:AddChild(msg)
         local f = AceGUI:Create("SimpleGroup")
         f:SetFullHeight(true)
