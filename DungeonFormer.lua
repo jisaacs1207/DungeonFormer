@@ -1,17 +1,18 @@
 DungeonFormer = LibStub("AceAddon-3.0"):NewAddon("DungeonFormer", "AceConsole-3.0", "AceEvent-3.0")
-timer =0
-lowest=1
-highest=60
-list={}
+timer = 0
+lowest = 1
+highest = 60
+list = {}
 local options = {
     name = "DungeonFormer",
     handler = DungeonFormer,
     type = 'group',
     args = {
+
     },
 }
 
-function DungeonFormer:AddToScroll(name, playerTable)
+function DungeonFormer:AddToScroll(playerTable)
     local name = playerTable.fullName;
     local level = playerTable.level
     local class = playerTable.classStr
@@ -24,69 +25,90 @@ function DungeonFormer:AddToScroll(name, playerTable)
 end
 
 function DungeonFormer:PullWho()
-  resultNumber=C_FriendList.GetNumWhoResults();
-  for i=1,resultNumber do
-    table.insert(list,C_FriendList.GetWhoInfo(i))
-  end
-  --local player = list[1]
-  --print(player.fullName)
-  ToggleFriendsFrame(2)
-  tab:SelectTab("tab2")
+    resultNumber = C_FriendList.GetNumWhoResults();
+    for i = 1, resultNumber do
+        table.insert(list, C_FriendList.GetWhoInfo(i))
+    end
+    --local player = list[1]
+    --print(player.fullName)
+    ToggleFriendsFrame(2)
+    tab:SelectTab("tab2")
 end
 
 function DungeonFormer:SearchPlayers()
-  -- clear the list table
-  list={}
+    -- clear the list table
+    list = {}
 
-  -- Class Variable Checks
-  local classChecked = false;
-  local druid = druidCheck:GetValue();
-  local hunter = hunterCheck:GetValue();
-  local mage = mageCheck:GetValue();
-  local paladin = paladinCheck:GetValue();
-  local priest = priestCheck:GetValue();
-  local rogue = rogueCheck:GetValue();
-  local shaman = shamanCheck:GetValue();
-  local warlock = warlockCheck:GetValue();
-  local warriorCheck = warriorCheck:GetValue();
+    -- Class Variable Checks
+    local classChecked = false;
+    local druid = druidCheck:GetValue();
+    local hunter = hunterCheck:GetValue();
+    local mage = mageCheck:GetValue();
+    local paladin = paladinCheck:GetValue();
+    local priest = priestCheck:GetValue();
+    local rogue = rogueCheck:GetValue();
+    local shaman = shamanCheck:GetValue();
+    local warlock = warlockCheck:GetValue();
+    local warrior = warriorCheck:GetValue();
 
-  if(druid or hunter or mage or paladin or priest or rogue or shaman or warlock or warrior) then
-    classChecked=true;
-  end
+    if (druid or hunter or mage or paladin or priest or rogue or shaman or warlock or warrior) then
+        classChecked = true;
+    end
 
-  -- msg
-  msg = "/who "
+    -- msg
+    msg = "/who "
 
-  -- level shit
-  local low = lowLvl:GetText();
-  local high = highLvl:GetText();
+    -- level shit
+    local low = lowLvl:GetText();
+    local high = highLvl:GetText();
 
-  -- attach zone to msg
-  local subzone = GetZoneText();
-  local checkarea = inareaCheck:GetValue();
-  if(checkarea) then
-    msg = msg .. "z-\""..subzone.."\" "
-  end
+    -- attach zone to msg
+    local subzone = GetZoneText();
+    local checkarea = inareaCheck:GetValue();
+    if (checkarea) then
+        msg = msg .. "z-\"" .. subzone .. "\" "
+    end
 
-  -- append class text to msg
+    -- append class text to msg
 
-  if(classChecked) then
-    if(druid) then msg = msg .. "c-druid " end
-    if(hunter) then msg = msg .. "c-hunter " end
-    if(mage) then msg = msg .. "c-mage " end
-    if(paladin) then msg = msg .. "c-paladin " end
-    if(priest) then msg = msg .. "c-priest " end
-    if(rogue) then msg = msg .. "c-rogue " end
-    if(shaman) then msg = msg .. "c-shaman " end
-    if(warlock) then msg = msg .. "c-warlock " end
-    if(warrior) then msg = msg .. "c-warrior " end
-  end
+    if (classChecked) then
+        if (druid) then
+            msg = msg .. "c-druid "
+        end
+        if (hunter) then
+            msg = msg .. "c-hunter "
+        end
+        if (mage) then
+            msg = msg .. "c-mage "
+        end
+        if (paladin) then
+            msg = msg .. "c-paladin "
+        end
+        if (priest) then
+            msg = msg .. "c-priest "
+        end
+        if (rogue) then
+            msg = msg .. "c-rogue "
+        end
+        if (shaman) then
+            msg = msg .. "c-shaman "
+        end
+        if (warlock) then
+            msg = msg .. "c-warlock "
+        end
+        if (warrior) then
+            msg = msg .. "c-warrior "
+        end
+    end
 
-  -- append numbers to msg
-  msg = msg .. low .. "-" .. high
+    -- append numbers to msg
+    msg = msg .. low .. "-" .. high
 
-  DEFAULT_CHAT_FRAME.editBox:SetText(msg) ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
-  C_Timer.After(1, function() DungeonFormer:PullWho() end)
+    DEFAULT_CHAT_FRAME.editBox:SetText(msg)
+    ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
+    C_Timer.After(1, function()
+        DungeonFormer:PullWho()
+    end)
 end
 
 function DungeonFormer:OnInitialize()
@@ -118,7 +140,9 @@ function DungeonFormer:OnInitialize()
         local searchButton = AceGUI:Create("Button")
         searchButton:SetText("Search")
         searchButton:SetWidth(100)
-        searchButton:SetCallback("OnClick", function() DungeonFormer:SearchPlayers() end)
+        searchButton:SetCallback("OnClick", function()
+            DungeonFormer:SearchPlayers()
+        end)
         container:AddChild(searchButton)
 
         inareaCheck = AceGUI:Create("CheckBox")
@@ -190,68 +214,82 @@ function DungeonFormer:OnInitialize()
 
     -- function that draws the widgets for the second tab
     local function DrawGroup2(container)
-      local f = AceGUI:Create("SimpleGroup")
-      container:AddChild(f)
-      f:SetLayout("Fill") --Fill will make the first child fill the whole content area
-      local scrollWindow = AceGUI:Create("ScrollFrame")
-      f:AddChild(scrollWindow)
-      scrollWindow:SetLayout("Flow")
-      local labels = {}
-      for i=1,table.getn(list) do
-        local name = list[i].fullName;
-        local level = list[i].level
-        local class = list[i].classStr
-        local area = list[i].area
-        local playerString = name .. " " .. level .. " " .. class .. " " .. area
-        tempLabel = AceGUI:Create("Button")
-        tempLabel:SetText(playerString)
-        tempLabel:SetFullWidth(true)
-        tempLabel:SetCallback("OnClick", function() print(name) end)
-        scrollWindow:AddChild(tempLabel)
-      end
-      
+        msg = AceGUI:Create("EditBox")
+        msg:SetText("Hey, want some hotdogs?")
+        msg:SetLabel("Message")
+        msg:SetWidth(250)
+        msg:DisableButton(true)
+        container:AddChild(msg)
+        local f = AceGUI:Create("SimpleGroup")
+        f:SetFullHeight(true)
+        f:SetFullWidth(true)
+        container:AddChild(f)
+        f:SetLayout("Fill") --Fill will make the first child fill the whole content area
+        local scrollWindow = AceGUI:Create("ScrollFrame")
+        scrollWindow.width = "fill";
+        scrollWindow.height = "fill";
+        f:AddChild(scrollWindow)
+        scrollWindow:SetLayout("Flow")
+        print(f:IsFullHeight())
+        for i = 1, table.getn(list) do
+            local name = list[i].fullName;
+            local level = list[i].level
+            local class = list[i].classStr
+            local area = list[i].area
+            local playerString = name .. " " .. level .. " " .. class .. " " .. area
+            tempLabel = AceGUI:Create("Button")
+            tempLabel:SetText(playerString)
+            tempLabel:SetFullWidth(true)
+            tempLabel:SetCallback("OnClick", function()
+                print(name)
+            end)
+            scrollWindow:AddChild(tempLabel)
+        end
+
 
     end
 
     -- function that draws the widgets for the third tab
     local function DrawGroup3(container)
-      local desc = AceGUI:Create("Label")
-      desc:SetText("Blacklist")
-      desc:SetFullWidth(true)
-      container:AddChild(desc)
+        local desc = AceGUI:Create("Label")
+        desc:SetText("Blacklist")
+        desc:SetFullWidth(true)
+        container:AddChild(desc)
 
-      local button = AceGUI:Create("Button")
-      button:SetText("Tab 3 Button")
-      button:SetWidth(200)
-      container:AddChild(button)
+        local button = AceGUI:Create("Button")
+        button:SetText("Tab 3 Button")
+        button:SetWidth(200)
+        container:AddChild(button)
     end
 
     -- Callback function for OnGroupSelected
     local function SelectGroup(container, event, group)
-       container:ReleaseChildren()
-       if group == "tab1" then
-          DrawGroup1(container)
-       elseif group == "tab2" then
-          DrawGroup2(container)
-       elseif group == "tab3" then
-          DrawGroup3(container)
-       end
+        container:ReleaseChildren()
+        if group == "tab1" then
+            DrawGroup1(container)
+        elseif group == "tab2" then
+            DrawGroup2(container)
+        elseif group == "tab3" then
+            DrawGroup3(container)
+        end
     end
 
     -- Create the frame container
     frame = AceGUI:Create("Frame")
     frame:SetTitle("Dungeon Former")
     frame:SetStatusText("Hotdogs.")
-    frame:SetCallback("OnClose", function(widget) AceGUI:Release(widget) end)
+    frame:SetCallback("OnClose", function(widget)
+        AceGUI:Release(widget)
+    end)
     -- Fill Layout - the TabGroup widget will fill the whole frame
     frame:SetLayout("Fill")
     frame:SetWidth(300)
 
     -- Create the TabGroup
-    tab =  AceGUI:Create("TabGroup")
+    tab = AceGUI:Create("TabGroup")
     tab:SetLayout("Flow")
     -- Setup which tabs to show
-    tab:SetTabs({{text="Search", value="tab1"}, {text="Results", value="tab2"}, {text="Blacklist", value="tab3"}})
+    tab:SetTabs({ { text = "Search", value = "tab1" }, { text = "Results", value = "tab2" }, { text = "Blacklist", value = "tab3" } })
     -- Register callback
     tab:SetCallback("OnGroupSelected", SelectGroup)
     -- Set initial Tab (this will fire the OnGroupSelected callback)
