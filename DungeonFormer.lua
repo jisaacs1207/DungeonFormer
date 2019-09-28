@@ -206,6 +206,7 @@ function DungeonFormer:OnInitialize()
         tempLabel = AceGUI:Create("Button")
         tempLabel:SetText(playerString)
         tempLabel:SetFullWidth(true)
+        tempLabel:SetCallback("OnClick", function() print(name) end)
         scrollWindow:AddChild(tempLabel)
       end
       
