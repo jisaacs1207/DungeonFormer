@@ -71,7 +71,17 @@ end
 function DungeonFormer:PullWho()
     resultNumber = C_FriendList.GetNumWhoResults();
     for i = 1, resultNumber do
-        table.insert(list, C_FriendList.GetWhoInfo(i))
+        local addToTable = true
+        local newTableEntry =  C_FriendList.GetWhoInfo(i)
+        for j = 1, table.getn(carelessWhispered) do
+            if (carelessWhispered[j].fullName == newTableEntry.fullName) then
+                addToTable = false
+                break
+            end
+        end
+        if(addToTable) then
+            table.insert(list, newTableEntry)
+        end
     end
     --local player = list[1]
     --print(player.fullName)
