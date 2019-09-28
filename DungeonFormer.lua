@@ -274,7 +274,7 @@ function DungeonFormer:OnInitialize()
             elseif class == "Warlock" then
                 tempLabel:SetColor(ClassColors.Warlock.r, ClassColors.Warlock.g, ClassColors.Warlock.b)
             end
-            --tempLabel:SetHighlight(ClassColors.CustomColor.r,ClassColors.CustomColor.g,ClassColors.CustomColor.b,ClassColors.CustomColor.a)
+            tempLabel:SetHighlight([[Interface\QuestFrame\UI-QuestTitleHighlight]])
             tempLabel:SetFont("Fonts\\FRIZQT__.TTF", 10)
             tempLabel:SetCallback("OnClick", function()
                 DEFAULT_CHAT_FRAME.editBox:SetText("/tell " .. name .. " " .. msg:GetText())
