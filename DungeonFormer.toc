@@ -3,6 +3,7 @@
 ## Author: Josh Isaacs
 ## Version: 0.1
 ## DefaultState: enabled
+## SavedVariables: carelessWhispered, blacklist
 
 embeds.xml
 DungeonFormer.lua

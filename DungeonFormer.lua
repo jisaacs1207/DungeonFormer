@@ -3,7 +3,6 @@ timer = 0
 lowest = 1
 highest = 60
 list = {}
-carelessWhispered = {}
 
 -- Variables to keep tab variables static rather than to redefine them every time the tab changes
 LowLevel = 17
@@ -69,6 +68,9 @@ function DungeonFormer:AddToScroll(playerTable)
 end
 
 function DungeonFormer:PullWho()
+    if(carelessWhispered == nil) then
+        carelessWhispered = {}
+    end
     resultNumber = C_FriendList.GetNumWhoResults();
     for i = 1, resultNumber do
         local addToTable = true
@@ -304,6 +306,9 @@ function DungeonFormer:OnInitialize()
 
     -- function that draws the widgets for the second tab
     local function DrawGroup2(container)
+        if(carelessWhispered == nil) then
+            carelessWhispered = {}
+        end
         msg = AceGUI:Create("EditBox")
         msg:SetText(MessageBox)
         msg:SetLabel("Message")
@@ -370,6 +375,9 @@ function DungeonFormer:OnInitialize()
 
     -- function that draws the widgets for the third tab
     local function DrawGroup3(container)
+        if(carelessWhispered == nil) then
+            carelessWhispered = {}
+        end
         local f = AceGUI:Create("SimpleGroup")
         f:SetFullHeight(true)
         f:SetFullWidth(true)
