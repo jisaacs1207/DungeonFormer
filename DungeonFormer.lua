@@ -3,6 +3,22 @@ timer = 0
 lowest = 1
 highest = 60
 list = {}
+
+ClassColors = {
+    CustomColor = { r = 0.77, g = 0.12, b = 0.23, a = 1 },
+    DeathKnight = { r = 0.77, g = 0.12, b = 0.23 },
+    Druid = { r = 1.00, g = 0.49, b = 0.04 },
+    Hunter = { r = 0.67, g = 0.83, b = 0.45 },
+    Mage = { r = 0.41, g = 0.80, b = 0.94 },
+    Monk = { r = 0, g = 1, b = 0.59 },
+    Paladin = { r = 0.96, g = 0.55, b = 0.73 },
+    Priest = { r = 1.00, g = 1.00, b = 1.00 },
+    Rogue = { r = 1.00, g = 0.96, b = 0.41 },
+    Shaman = { r = 0.0, g = 0.44, b = 0.87 },
+    Wrlock = { r = 0.58, g = 0.51, b = 0.79 },
+    Warrior = { r = 0.78, g = 0.61, b = 0.43 },
+}
+
 local options = {
     name = "DungeonFormer",
     handler = DungeonFormer,
@@ -230,21 +246,42 @@ function DungeonFormer:OnInitialize()
         scrollWindow.height = "fill";
         f:AddChild(scrollWindow)
         scrollWindow:SetLayout("Flow")
-        print(f:IsFullHeight())
         for i = 1, table.getn(list) do
             local name = list[i].fullName;
             local level = list[i].level
             local class = list[i].classStr
             local area = list[i].area
-            local playerString = name .. " " .. level .. " " .. class .. " " .. area
-            tempLabel = AceGUI:Create("Button")
+            local playerString = name .. " " .. level .. " " .. area
+            local tempLabel = AceGUI:Create("InteractiveLabel")
+            --tempLabel:SetFont(GameFontHighlightMedium:GetFont())
             tempLabel:SetText(playerString)
-            tempLabel:SetFullWidth(true)
+            if class == "Warrior" then
+                tempLabel:SetColor(ClassColors.Warrior.r, ClassColors.Warrior.g, ClassColors.Warrior.b)
+            elseif class == "Priest" then
+                tempLabel:SetColor(ClassColors.Priest.r, ClassColors.Priest.g, ClassColors.Priest.b)
+            elseif class == "Druid" then
+                tempLabel:SetColor(ClassColors.Druid.r, ClassColors.Druid.g, ClassColors.Druid.b)
+            elseif class == "Hunter" then
+                tempLabel:SetColor(ClassColors.Hunter.r, ClassColors.Hunter.g, ClassColors.Hunter.b)
+            elseif class == "Mage" then
+                tempLabel:SetColor(ClassColors.Mage.r, ClassColors.Mage.g, ClassColors.Mage.b)
+            elseif class == "Paladin" then
+                tempLabel:SetColor(ClassColors.Paladin.r, ClassColors.Paladin.g, ClassColors.Paladin.b)
+            elseif class == "Rogue" then
+                tempLabel:SetColor(ClassColors.Rogue.r, ClassColors.Rogue.g, ClassColors.Rogue.b)
+            elseif class == "Shaman" then
+                tempLabel:SetColor(ClassColors.Shaman.r, ClassColors.Shaman.g, ClassColors.Shaman.b)
+            elseif class == "Warlock" then
+                tempLabel:SetColor(ClassColors.Warlock.r, ClassColors.Warlock.g, ClassColors.Warlock.b)
+            end
+            --tempLabel:SetHighlight(ClassColors.CustomColor.r,ClassColors.CustomColor.g,ClassColors.CustomColor.b,ClassColors.CustomColor.a)
+            tempLabel:SetFont("Fonts\\FRIZQT__.TTF", 10)
             tempLabel:SetCallback("OnClick", function()
                 DEFAULT_CHAT_FRAME.editBox:SetText("/tell " .. name .. " " .. msg:GetText())
                 ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
             end)
             scrollWindow:AddChild(tempLabel)
+            frame:SetStatusText("      " .. table.getn(list) .. " names collected.")
         end
 
 
