@@ -18,6 +18,8 @@ ShamanCheck = false
 WarlockCheck = false
 WarriorCheck = false
 MessageBox = "Hey, wanna watch Zool Babies with me?"
+ReplyText = "Group's filled, sorry!"
+ReplyingButton = "Off"
 
 DungeonFormer:RegisterChatCommand("df", "ToggleShowPlugin")
 
@@ -379,9 +381,57 @@ function DungeonFormer:OnInitialize()
             carelessWhispered = {}
         end
 
+        replyText = AceGUI:Create("EditBox")
+        replyText:SetText(ReplyText)
+        replyText:SetLabel("Auto-reply")
+        replyText:SetWidth(170)
+        replyText:DisableButton(true)
+        replyText:SetCallback("OnTextChanged", function()
+            ReplyText = replyText:GetText()
+        end)
+        container:AddChild(replyText)
+
+        local replyButton = AceGUI:Create("Button")
+        replyButton:SetText(ReplyingButton)
+        replyButton:SetWidth(65)
+        replyButton:SetCallback("OnClick", function()
+            if ReplyingButton == "Off" then
+                ReplyingButton = "On"
+                frame:SetStatusText("Auto-Replying.")
+            else
+                ReplyingButton = "Off"
+                frame:SetStatusText("Stopped Auto-Replying")
+            end
+
+            tab:SelectTab("tab1") -- so lazy... just refreshing the tab by switching it.
+            tab:SelectTab("tab3")
+
+        end)
+        container:AddChild(replyButton)
+
+        local clearNRButton = AceGUI:Create("Button")
+        clearNRButton:SetText("Clear No-Reply")
+        clearNRButton:SetWidth(120)
+        clearNRButton:SetCallback("OnClick", function()
+            local toremove = {}
+            for i = 1, table.getn(carelessWhispered) do
+                if not carelessWhispered[i].recentChat then
+                    table.insert(toremove, i)
+                    --table.remove(carelessWhispered,i)
+                end
+            end
+            for x = 1, table.getn(toremove) do
+                table.remove(carelessWhispered, toremove[x])
+            end
+            tab:SelectTab("tab1") -- so lazy... just refreshing the tab by switching it.
+            tab:SelectTab("tab3")
+            frame:SetStatusText("No-Replies Cleared")
+        end)
+        container:AddChild(clearNRButton)
+
         local clearButton = AceGUI:Create("Button")
-        clearButton:SetText("Clear")
-        clearButton:SetWidth(100)
+        clearButton:SetText("Clear List")
+        clearButton:SetWidth(120)
         clearButton:SetCallback("OnClick", function()
             carelessWhispered = {}
             tab:SelectTab("tab1") -- so lazy... just refreshing the tab by switching it.
@@ -444,9 +494,8 @@ function DungeonFormer:OnInitialize()
                 tab:SelectTab("tab3")
             end)
             scrollWindow:AddChild(tempLabel)
-            frame:SetStatusText("      " .. table.getn(list) .. " names collected.")
         end
-
+        frame:SetStatusText("      " .. table.getn(list) .. " names collected.")
     end
 
     -- Callback function for OnGroupSelected
@@ -495,7 +544,7 @@ function DungeonFormer:OnInitialize()
     -- add to the frame container
     frame:AddChild(tab)
 
-    local cFrame = CreateFrame("FRAME", "FooAddonFrame");
+    local cFrame = CreateFrame("FRAME", "FooAddonFrame"); -- worker frame to check incoming chats
     cFrame:RegisterEvent("CHAT_MSG_WHISPER");
     local function eventHandler(self, event, ...)
         local arg1, arg2 = ...
@@ -504,10 +553,19 @@ function DungeonFormer:OnInitialize()
         for i = 1, table.getn(carelessWhispered) do
             local name = carelessWhispered[i].fullName;
             if string.find(OtherPlayer, name) then
-                carelessWhispered[i].recentChat = string.sub(message, 1, 20)
+                carelessWhispered[i].recentChat = string.sub(message, 1, 20) -- Arbitrarily chose 20 char limit.
                 if (currentTab == 3) then
                     tab:SelectTab("tab1") -- again with the lazy tab updates
                     tab:SelectTab("tab3")
+                end
+                if ReplyingButton == "On" then
+                    -- auto reply if autoreply is on
+                    if not carelessWhispered[i].autoreplied then
+                        -- check if you've already autoreplied to this person
+                        DEFAULT_CHAT_FRAME.editBox:SetText("/tell " .. OtherPlayer .. " " .. ReplyText)
+                        ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
+                        carelessWhispered[i].autoreplied = true
+                    end
                 end
             end
         end
