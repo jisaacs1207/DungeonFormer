@@ -3,7 +3,7 @@ timer = 0
 lowest = 1
 highest = 60
 list = {}
-
+currentTab = 1
 -- Variables to keep tab variables static rather than to redefine them every time the tab changes
 LowLevel = 17
 HighLevel = 26
@@ -378,6 +378,18 @@ function DungeonFormer:OnInitialize()
         if(carelessWhispered == nil) then
             carelessWhispered = {}
         end
+
+        local clearButton = AceGUI:Create("Button")
+        clearButton:SetText("Clear")
+        clearButton:SetWidth(100)
+        clearButton:SetCallback("OnClick", function()
+            carelessWhispered = {}
+            tab:SelectTab("tab1") -- so lazy... just refreshing the tab by switching it.
+            tab:SelectTab("tab3")
+            frame:SetStatusText("Whispers cleared.")
+        end)
+        container:AddChild(clearButton)
+
         local f = AceGUI:Create("SimpleGroup")
         f:SetFullHeight(true)
         f:SetFullWidth(true)
@@ -389,11 +401,18 @@ function DungeonFormer:OnInitialize()
         f:AddChild(scrollWindow)
         scrollWindow:SetLayout("Flow")
         for i = 1, table.getn(carelessWhispered) do
+            local playerString = nil
             local name = carelessWhispered[i].fullName;
             local level = carelessWhispered[i].level
             local class = carelessWhispered[i].classStr
             local area = carelessWhispered[i].area
-            local playerString = name .. " " .. level .. " " .. area
+            local message = carelessWhispered[i].recentChat
+            if not message then
+                playerString = level .. " " .. name
+            else
+                playerString = level .. " " .. name .. ": " .. message
+            end
+
             local tempLabel = AceGUI:Create("InteractiveLabel")
             --tempLabel:SetFont(GameFontHighlightMedium:GetFont())
             tempLabel:SetText(playerString)
@@ -435,10 +454,13 @@ function DungeonFormer:OnInitialize()
         container:ReleaseChildren()
         if group == "tab1" then
             DrawGroup1(container)
+            currentTab = 1
         elseif group == "tab2" then
             DrawGroup2(container)
+            currentTab = 2
         elseif group == "tab3" then
             DrawGroup3(container)
+            currentTab = 3
         end
     end
 
@@ -463,9 +485,35 @@ function DungeonFormer:OnInitialize()
     tab:SetCallback("OnGroupSelected", SelectGroup)
     -- Set initial Tab (this will fire the OnGroupSelected callback)
     tab:SelectTab("tab1")
+    currentTab = 1
+    --frame:RegisterEvent("CHAT_MSG_WHISPER")
+    --local function eventHandler(self, event, ...)
+    --   print("got it")
+    --end
+    --frame:SetScript("OnEvent", eventHandler);
 
     -- add to the frame container
     frame:AddChild(tab)
+
+    local cFrame = CreateFrame("FRAME", "FooAddonFrame");
+    cFrame:RegisterEvent("CHAT_MSG_WHISPER");
+    local function eventHandler(self, event, ...)
+        local arg1, arg2 = ...
+        local OtherPlayer = arg2;
+        local message = arg1
+        for i = 1, table.getn(carelessWhispered) do
+            local name = carelessWhispered[i].fullName;
+            if string.find(OtherPlayer, name) then
+                carelessWhispered[i].recentChat = string.sub(message, 1, 20)
+                if (currentTab == 3) then
+                    tab:SelectTab("tab1") -- again with the lazy tab updates
+                    tab:SelectTab("tab3")
+                end
+            end
+        end
+    end
+    cFrame:SetScript("OnEvent", eventHandler);
+
 end
 
 function DungeonFormer:OnEnable()
