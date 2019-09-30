@@ -40,32 +40,32 @@ ClassColors = {
 }
 
 Dungeons = {
-    { name = "Choose A Dungeon", low = 1, high = 10 },
-    { name = "Ragefire Chasm", low = 13, high = 18 },
-    { name = "Wailing Caverns", low = 17, high = 24 },
-    { name = "The Deadmines", low = 17, high = 26 },
-    { name = "Shadowfang Keep", low = 22, high = 30 },
-    { name = "Blackfathom Deeps", low = 24, high = 32 },
-    { name = "The Stockade", low = 24, high = 32 },
-    { name = "Gnomeregan", low = 29, high = 38 },
-    { name = "Razorfen Kraul", low = 29, high = 38 },
-    { name = "SM Graveyard", low = 26, high = 36 },
-    { name = "SM Library", low = 29, high = 39 },
-    { name = "SM Armory", low = 32, high = 42 },
-    { name = "SM Cathedral", low = 35, high = 45 },
-    { name = "Razorfen Downs", low = 37, high = 46 },
-    { name = "Uldaman", low = 41, high = 51 },
-    { name = "Zul'Farrak", low = 42, high = 46 },
-    { name = "Zul'Farrak", low = 46, high = 55 },
-    { name = "Sunken Temple", low = 50, high = 56 },
-    { name = "Blackrock Depths", low = 52, high = 60 },
-    { name = "Lower Blackrock Spire", low = 55, high = 60 },
-    { name = "Upper Blackrock Spire", low = 55, high = 60 },
-    { name = "Dire Maul East", low = 55, high = 60 },
-    { name = "Dire Maul West", low = 55, high = 60 },
-    { name = "Dire Maul North", low = 55, high = 60 },
-    { name = "Scholomance", low = 58, high = 60 },
-    { name = "Stratholme", low = 58, high = 60 },
+    { name = "Choose A Dungeon", low = 1, high = 10, sname = "a dungeon" },
+    { name = "[13-18] Ragefire Chasm - Orgrimar", low = 13, high = 18, sname = "Ragefire Chasm" },
+    { name = "[17-24] Wailing Caverns - The Barrens", low = 17, high = 24, sname = "Wailing Caverns" },
+    { name = "[17-26] The Deadmines - Westfall", low = 17, high = 26, sname = "The Deadmines" },
+    { name = "[22-30] Shadowfang Keep - Silverpine Forest", low = 22, high = 30, sname = "Shadowfang Keep" },
+    { name = "[24-32] Blackfathom Deeps - Ashenvale", low = 24, high = 32, sname = "Blackfathom Deeps" },
+    { name = "[24-32] The Stockade - Stormwind", low = 24, high = 32, sname = "The Stockade" },
+    { name = "[29-38] Gnomeregan - Dun Morogh", low = 29, high = 38, sname = "Gnomeregan" },
+    { name = "[29-38] Razorfen Kraul - The Barrens", low = 29, high = 38, sname = "Razorfen Kraul" },
+    { name = "[26-36] SM Graveyard - Tirisfal Glades", low = 26, high = 36, sname = "SM Graveyard" },
+    { name = "[29-39] SM Library - Tirisfal Glades", low = 29, high = 39, sname = "SM Library" },
+    { name = "[32-42] SM Armory - Tirisfal Glades", low = 32, high = 42, sname = "SM Armory" },
+    { name = "[35-45] SM Cathedral - Tirisfal Glades", low = 35, high = 45, sname = "SM Cathedral" },
+    { name = "[37-46] Razorfen Downs - Thousand Needles", low = 37, high = 46, sname = "Razorfen Downs" },
+    { name = "[41-51] Uldaman - Badlands", low = 41, high = 51, sname = "Uldaman" },
+    { name = "[42-46] Zul'Farrak - Tanaris", low = 42, high = 46, sname = "Zul'Farrak" },
+    { name = "[46-55] Maraudon - Desolace", low = 46, high = 55, sname = "Maraudon" },
+    { name = "[50-56] Sunken Temple - Swamp of Sorrows", low = 50, high = 56, sname = "Sunken Temple" },
+    { name = "[52-60] Blackrock Depths - Burning Steppes", low = 52, high = 60, sname = "Blackrock Depths" },
+    { name = "[55-60] L Blackrock Spire - Burning Steppes", low = 55, high = 60, sname = "L Blackrock Spire" },
+    { name = "[55-60] U Blackrock Spire - Burning Steppes", low = 55, high = 60, sname = "U Blackrock Spire" },
+    { name = "[55-60] Dire Maul East - Feralas", low = 55, high = 60, sname = "Dire Maul East" },
+    { name = "[55-60] Dire Maul West - Feralas", low = 55, high = 60, sname = "Dire Maul West" },
+    { name = "[55-60] Dire Maul North - Feralas", low = 55, high = 60, sname = "Dire Maul North" },
+    { name = "[58-60] Scholomance - Western Plaguelands", low = 58, high = 60, sname = "Scholomance" },
+    { name = "[58-60] Stratholme - Eastern Plaguelands", low = 58, high = 60, sname = "Stratholme" },
 }
 
 local options = {
@@ -223,13 +223,16 @@ function DungeonFormer:OnInitialize()
             local low = Dungeons[key]['low']
             local high = Dungeons[key]['high']
             local dungeonname1 = Dungeons[key]['name']
+            local dungeonname1s = Dungeons[key]['sname']
             DungeonDropdown = dungeonname1
+            print(dungeonname1s)
             for i = 1, #Dungeons do
-                local dungeonname2 = Dungeons[i]['name']
-                if string.find(dungeonname1, dungeonname2) then
+                local dungeonname2s = Dungeons[i]['name']
+                print(dungeonname2s)
+                if string.find(dungeonname2s, dungeonname1s) then
                     LowLevel = low
                     HighLevel = high
-                    MessageBox = "Hey, want to run " .. dungeonname1 .. "?"
+                    MessageBox = "Hey, want to run " .. dungeonname1s .. "?"
                     tab:SelectTab("tab3") -- so lazy... just refreshing the tab by switching it.
                     tab:SelectTab("tab1")
                 end
