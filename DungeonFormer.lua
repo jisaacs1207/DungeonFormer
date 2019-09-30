@@ -5,8 +5,9 @@ highest = 60
 list = {}
 currentTab = 1
 -- Variables to keep tab variables static rather than to redefine them every time the tab changes
-LowLevel = 17
-HighLevel = 26
+DungeonDropdown = "Choose A Dungeon"
+LowLevel = 1
+HighLevel = 10
 InAreaCheck = false
 DruidCheck = false
 HunterCheck = false
@@ -36,6 +37,35 @@ ClassColors = {
     Shaman = { r = 0.0, g = 0.44, b = 0.87 },
     Warlock = { r = 0.58, g = 0.51, b = 0.79 },
     Warrior = { r = 0.78, g = 0.61, b = 0.43 },
+}
+
+Dungeons = {
+    { name = "Choose A Dungeon", low = 1, high = 10 },
+    { name = "Ragefire Chasm", low = 13, high = 18 },
+    { name = "Wailing Caverns", low = 17, high = 24 },
+    { name = "The Deadmines", low = 17, high = 26 },
+    { name = "Shadowfang Keep", low = 22, high = 30 },
+    { name = "Blackfathom Deeps", low = 24, high = 32 },
+    { name = "The Stockade", low = 24, high = 32 },
+    { name = "Gnomeregan", low = 29, high = 38 },
+    { name = "Razorfen Kraul", low = 29, high = 38 },
+    { name = "SM Graveyard", low = 26, high = 36 },
+    { name = "SM Library", low = 29, high = 39 },
+    { name = "SM Armory", low = 32, high = 42 },
+    { name = "SM Cathedral", low = 35, high = 45 },
+    { name = "Razorfen Downs", low = 37, high = 46 },
+    { name = "Uldaman", low = 41, high = 51 },
+    { name = "Zul'Farrak", low = 42, high = 46 },
+    { name = "Zul'Farrak", low = 46, high = 55 },
+    { name = "Sunken Temple", low = 50, high = 56 },
+    { name = "Blackrock Depths", low = 52, high = 60 },
+    { name = "Lower Blackrock Spire", low = 55, high = 60 },
+    { name = "Upper Blackrock Spire", low = 55, high = 60 },
+    { name = "Dire Maul East", low = 55, high = 60 },
+    { name = "Dire Maul West", low = 55, high = 60 },
+    { name = "Dire Maul North", low = 55, high = 60 },
+    { name = "Scholomance", low = 58, high = 60 },
+    { name = "Stratholme", low = 58, high = 60 },
 }
 
 local options = {
@@ -181,9 +211,35 @@ function DungeonFormer:OnInitialize()
         desc:SetFullWidth(true)
         container:AddChild(desc)
 
+        dungeonDropdown = AceGUI:Create("Dropdown")
+        local dNames = {}
+        for i = 1, #Dungeons do
+            table.insert(dNames, Dungeons[i]['name'])
+        end
+        dungeonDropdown:SetList(dNames)
+        dungeonDropdown:SetText(DungeonDropdown)
+        dungeonDropdown:SetWidth(250)
+        dungeonDropdown:SetCallback("OnValueChanged", function(this, event, key)
+            local low = Dungeons[key]['low']
+            local high = Dungeons[key]['high']
+            local dungeonname1 = Dungeons[key]['name']
+            DungeonDropdown = dungeonname1
+            for i = 1, #Dungeons do
+                local dungeonname2 = Dungeons[i]['name']
+                if string.find(dungeonname1, dungeonname2) then
+                    LowLevel = low
+                    HighLevel = high
+                    MessageBox = "Hey, want to run " .. dungeonname1 .. "?"
+                    tab:SelectTab("tab3") -- so lazy... just refreshing the tab by switching it.
+                    tab:SelectTab("tab1")
+                end
+            end
+        end)
+        container:AddChild(dungeonDropdown)
+
         lowLvl = AceGUI:Create("EditBox")
         lowLvl:SetText(LowLevel)
-        lowLvl:SetLabel("Low Level")
+        lowLvl:SetLabel("High Level")
         lowLvl:SetWidth(60)
         lowLvl:DisableButton(true)
         lowLvl:SetCallback("OnTextChanged", function()
