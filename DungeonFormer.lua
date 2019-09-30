@@ -225,10 +225,8 @@ function DungeonFormer:OnInitialize()
             local dungeonname1 = Dungeons[key]['name']
             local dungeonname1s = Dungeons[key]['sname']
             DungeonDropdown = dungeonname1
-            print(dungeonname1s)
             for i = 1, #Dungeons do
                 local dungeonname2s = Dungeons[i]['name']
-                print(dungeonname2s)
                 if string.find(dungeonname2s, dungeonname1s) then
                     LowLevel = low
                     HighLevel = high
