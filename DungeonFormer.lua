@@ -56,7 +56,7 @@ Dungeons = {
     { name = "[35-45] SM Cathedral - Tirisfal Glades", low = 35, high = 45, sname = "SM Cathedral" },
     { name = "[37-46] Razorfen Downs - Thousand Needles", low = 37, high = 46, sname = "Razorfen Downs" },
     { name = "[41-51] Uldaman - Badlands", low = 41, high = 51, sname = "Uldaman" },
-    { name = "[42-46] Zul'Farrak - Tanaris", low = 42, high = 46, sname = "Zul'Farrak" },
+    { name = "[42-46] Zul'Farrak - Tanaris", low = 42, high = 56, sname = "Zul'Farrak" },
     { name = "[46-55] Maraudon - Desolace", low = 46, high = 55, sname = "Maraudon" },
     { name = "[50-56] Sunken Temple - Swamp of Sorrows", low = 50, high = 56, sname = "Sunken Temple" },
     { name = "[52-60] Blackrock Depths - Burning Steppes", low = 52, high = 60, sname = "Blackrock Depths" },
