@@ -59,14 +59,14 @@ Dungeons = {
     { name = "[42-46] Zul'Farrak - Tanaris", low = 42, high = 56, sname = "Zul'Farrak" },
     { name = "[46-55] Maraudon - Desolace", low = 46, high = 55, sname = "Maraudon" },
     { name = "[50-56] Sunken Temple - Swamp of Sorrows", low = 50, high = 56, sname = "Sunken Temple" },
-    { name = "[52-60] Blackrock Depths - Burning Steppes", low = 52, high = 60, sname = "Blackrock Depths" },
-    { name = "[55-60] L Blackrock Spire - Burning Steppes", low = 55, high = 60, sname = "L Blackrock Spire" },
-    { name = "[55-60] U Blackrock Spire - Burning Steppes", low = 55, high = 60, sname = "U Blackrock Spire" },
-    { name = "[55-60] Dire Maul East - Feralas", low = 55, high = 60, sname = "Dire Maul East" },
-    { name = "[55-60] Dire Maul West - Feralas", low = 55, high = 60, sname = "Dire Maul West" },
-    { name = "[55-60] Dire Maul North - Feralas", low = 55, high = 60, sname = "Dire Maul North" },
-    { name = "[58-60] Scholomance - Western Plaguelands", low = 58, high = 60, sname = "Scholomance" },
-    { name = "[58-60] Stratholme - Eastern Plaguelands", low = 58, high = 60, sname = "Stratholme" },
+    { name = "[52-60] BRD - Burning Steppes", low = 52, high = 60, sname = "Blackrock Depths" },
+    { name = "[55-60] LBRS - Burning Steppes", low = 55, high = 60, sname = "L Blackrock Spire" },
+    { name = "[55-60] UBRS - Burning Steppes", low = 55, high = 60, sname = "U Blackrock Spire" },
+    { name = "[55-60] DM East - Feralas", low = 55, high = 60, sname = "Dire Maul East" },
+    { name = "[55-60] DM West - Feralas", low = 55, high = 60, sname = "Dire Maul West" },
+    { name = "[55-60] DM North - Feralas", low = 55, high = 60, sname = "Dire Maul North" },
+    { name = "[58-60] Scholomance - W Plaguelands", low = 58, high = 60, sname = "Scholomance" },
+    { name = "[58-60] Stratholme - E Plaguelands", low = 58, high = 60, sname = "Stratholme" },
 }
 
 Zones = {
