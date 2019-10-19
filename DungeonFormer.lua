@@ -6,6 +6,7 @@ list = {}
 currentTab = 1
 -- Variables to keep tab variables static rather than to redefine them every time the tab changes
 DungeonDropdown = "Choose A Dungeon"
+ZoneDropdown = "All Zones"
 LowLevel = 1
 HighLevel = 10
 InAreaCheck = false
@@ -66,6 +67,61 @@ Dungeons = {
     { name = "[55-60] Dire Maul North - Feralas", low = 55, high = 60, sname = "Dire Maul North" },
     { name = "[58-60] Scholomance - Western Plaguelands", low = 58, high = 60, sname = "Scholomance" },
     { name = "[58-60] Stratholme - Eastern Plaguelands", low = 58, high = 60, sname = "Stratholme" },
+}
+
+Zones = {
+    "All Zones",
+    "Alterac Mountains",
+    "Arathi Highlands",
+    "Ashenvale",
+    "Azshara",
+    "Badlands",
+    "Blackrock Mountain",
+    "Blackrock Spire",
+    "Blasted Lands",
+    "Burning Steppes",
+    "Caverns of Time",
+    "Darkshore",
+    "Darnassus",
+    "Deadwind Pass",
+    "Deeprun Tram",
+    "Desolace",
+    "Dun Morogh",
+    "Durotar",
+    "Duskwood",
+    "Dustwallow Marsh",
+    "Eastern Plaguelands",
+    "Elwynn Forest",
+    "Felwood",
+    "Feralas",
+    "Hillsbrad Foothills",
+    "Ironforge",
+    "Loch Modan",
+    "Moonglade",
+    "Mulgore",
+    "Onyxia's Lair",
+    "Orgrimmar",
+    "Redridge Mountains",
+    "Searing Gorge",
+    "Silithus",
+    "Silverpine Forest",
+    "Stonetalon Mountains",
+    "Stormwind City",
+    "Stranglethorn Vale",
+    "Swamp of Sorrows",
+    "Tanaris",
+    "Teldrassil",
+    "The Barrens",
+    "The Hinterlands",
+    "Thousand Needles",
+    "Thunder Bluff",
+    "Tirisfal Glades",
+    "Un'Goro Crater",
+    "Undercity",
+    "Western Plaguelands",
+    "Westfall",
+    "Wetlands",
+    "Winterspring"
 }
 
 local options = {
@@ -151,10 +207,8 @@ function DungeonFormer:SearchPlayers()
     local high = highLvl:GetText();
 
     -- attach zone to msg
-    local subzone = GetZoneText();
-    local checkarea = inareaCheck:GetValue();
-    if (checkarea) then
-        msg = msg .. "z-\"" .. subzone .. "\" "
+    if (ZoneDropdown ~= "All Zones") then
+        msg = msg .. "z-\"" .. ZoneDropdown .. "\" "
     end
 
     -- append class text to msg
@@ -266,19 +320,19 @@ function DungeonFormer:OnInitialize()
         end)
         container:AddChild(searchButton)
 
-        inareaCheck = AceGUI:Create("CheckBox")
-        inareaCheck:SetLabel("Search Only In Current Map")
-        inareaCheck:SetValue(InAreaCheck)
-        inareaCheck:SetType("checkbox")
-        inareaCheck:SetCallback("OnValueChanged", function()
-            InAreaCheck = inareaCheck:GetValue()
+        zoneDropdown = AceGUI:Create("Dropdown")
+        local zNames = {}
+        for i = 1, #Zones do
+            table.insert(zNames, Zones[i])
+        end
+        zoneDropdown:SetList(zNames)
+        zoneDropdown:SetText(ZoneDropdown)
+        zoneDropdown:SetWidth(250)
+        zoneDropdown:SetCallback("OnValueChanged", function(this, event, key)
+            local zonename = Zones[key]
+            ZoneDropdown = zonename
         end)
-        container:AddChild(inareaCheck)
-
-        local classHeading = AceGUI:Create("Heading")
-        classHeading:SetText("Class Inclusion")
-        classHeading:SetHeight(50)
-        container:AddChild(classHeading)
+        container:AddChild(zoneDropdown)
 
         druidCheck = AceGUI:Create("CheckBox")
         druidCheck:SetLabel("Druid")
